@@ -1,3 +1,7 @@
 ---
 ansible_distribution_release: xenial
 username: vagrant
+postgresql_username: vagrant
+postgresql_password: test123
+postgresql_databasename: vagrant
+ruby: ruby-2.6.3

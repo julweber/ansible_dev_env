@@ -1,0 +1,59 @@
+---
+- name: Upgrade all packages to the latest version
+  apt:
+    update_cache: yes
+    upgrade: dist
+- name: Install required system packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  loop: 
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+    - python3-pip
+    - python3-setuptools
+# Install apt packages
+- name: Install apt packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  loop:
+    - ansible
+    - postgresql 
+    - postgresql-client
+    - postgresql-contrib
+    - redis-server
+    - mysql-server
+    - libmysqlclient-dev
+    - sqlite3 
+    - libsqlite3-dev
+    - git 
+    - tree 
+    - libreadline6-dev 
+    - libreadline6
+    - libssl-dev 
+    - openssl 
+    - zlibc 
+    - build-essential 
+    - ruby 
+    - ruby-dev 
+    - libxml2-dev
+    - libxslt1-dev 
+    - libpq-dev 
+    - libmysqlclient-dev 
+    - zlib1g-dev
+    - tmux 
+    - vim 
+    - htop 
+    - libyaml-dev 
+    - apt-transport-https  
+    - unzip
+    - nano
+    - python3 
+    - awscli 
+    - rsync 
+    - cron

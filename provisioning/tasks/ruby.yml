@@ -1,0 +1,11 @@
+---
+- name: add rvm certificate
+  shell: "curl -sSL https://rvm.io/mpapis.asc | gpg --import -"
+- name: install rvm
+  shell: "curl -L https://get.rvm.io | bash -s stable" 
+  args:
+    creates: "/usr/local/rvm"
+# - name: install ruby
+#   shell: "rvm install --default {{ ruby }}" 
+#   args:
+#     creates: "~/.rvm/rubies/{{ ruby }}"

@@ -1,0 +1,19 @@
+---
+- name: Add an apt signing key for Docker
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+- name: Adding apt repository for Docker
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+    state: present
+    filename: docker.list
+- name: Install docker package
+  apt: "name={{ item }} state=latest update_cache=yes"
+  loop:
+    - docker-ce
+- name: Adding user to group docker to manage docker as non-root user
+  user: 
+    name: "{{ username }}"
+    groups: docker
+    append: yes

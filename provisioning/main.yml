@@ -7,23 +7,42 @@
     - vars.yml
 
   tasks:
+    - name: Upgrade all packages to the latest version
+      apt: update_cache=yes upgrade=dist
+    - name: Install required system packages
+      apt: name={{ item }} state=latest update_cache=yes
+      loop: 
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+        - python3-pip
+        - python3-setuptools
     - name: Add an apt signing key for Kubernetes
       apt_key:
         url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        state: present
+    - name: Add an apt signing key for Docker
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
         state: present
     - name: Adding apt repository for Kubernetes
       apt_repository:
         repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
         state: present
         filename: kubernetes.list
-    - name: apt-get update
+    - name: Adding apt repository for Docker
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+        filename: docker.list
+    - name: Update Apt Cache
       apt:
         update_cache: yes
-    
     # Install apt packages
     - name: Install apt packages
-      apt: "name={{ item }} state=present"
-      with_items:
+      apt: name={{ item }} state=latest update_cache=yes
+      loop:
         - ansible
         - postgresql 
         - postgresql-client
@@ -59,10 +78,17 @@
         - awscli 
         - rsync 
         - cron
+        - docker-ce
+    - name: Adding user to group docker to manage docker as non-root user
+      user: 
+       name={{ username }}
+       groups=docker
+       append=yes
 
   handlers:
     - name: Start services
       apt: "name={{ item }} state=started"
-      with_items:
+      loop:
         - mysql-server
         - postgresql
+        - docker

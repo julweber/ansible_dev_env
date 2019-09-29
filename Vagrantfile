@@ -3,8 +3,8 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure(2) do |config|
-  # Use Ubuntu 14.04 Trusty Tahr 64-bit as our operating system
-  config.vm.box = "ubuntu/trusty64"
+  # Use Ubuntu 16.04 Xenial
+  config.vm.box = "ubuntu/xenial64"
 
   # Configurate the virtual machine to use 2GB of RAM
   config.vm.provider :virtualbox do |vb|

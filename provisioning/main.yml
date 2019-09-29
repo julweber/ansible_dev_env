@@ -1,0 +1,68 @@
+---
+- hosts: all
+  gather_facts: yes
+  become: yes
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Add an apt signing key for Kubernetes
+      apt_key:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        state: present
+    - name: Adding apt repository for Kubernetes
+      apt_repository:
+        repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+        state: present
+        filename: kubernetes.list
+    - name: apt-get update
+      apt:
+        update_cache: yes
+    
+    # Install apt packages
+    - name: Install apt packages
+      apt: "name={{ item }} state=present"
+      with_items:
+        - ansible
+        - postgresql 
+        - postgresql-client
+        - postgresql-contrib
+        - mysql-server
+        - libmysqlclient-dev
+        - libsqlite3-dev
+        - git 
+        - tree 
+        - libreadline6-dev 
+        - libreadline6
+        - libssl-dev 
+        - openssl 
+        - zlibc 
+        - build-essential 
+        - ruby 
+        - ruby-dev 
+        - libxml2-dev
+        - libxslt1-dev 
+        - libpq-dev 
+        - libmysqlclient-dev 
+        - zlib1g-dev
+        - tmux 
+        - vim 
+        - htop 
+        - libyaml-dev 
+        - sqlite3 
+        - apt-transport-https 
+        - kubectl 
+        - unzip
+        - nano
+        - python3 
+        - awscli 
+        - rsync 
+        - cron
+
+  handlers:
+    - name: Start services
+      apt: "name={{ item }} state=started"
+      with_items:
+        - mysql-server
+        - postgresql
